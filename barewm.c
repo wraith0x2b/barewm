@@ -160,8 +160,8 @@ void handle_keypress_event(XEvent * e)
 	XEvent event;
 	XGrabKey(display, AnyKey, AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
         XMaskEvent (display, KeyPressMask, &event);
-	
 	unsigned int key = XLookupKeysym((XKeyEvent *) &event, 0);
+
 	if (key >= '0' && key <= '9')
 	{
 		XUngrabKey(display, AnyKey, AnyModifier, root);
@@ -169,7 +169,6 @@ void handle_keypress_event(XEvent * e)
 		select_window(key - '0');
 		return;
 	}
-
 	switch (key)
         {       
 		case KEY_TERMINAL:
@@ -201,7 +200,6 @@ void handle_keypress_event(XEvent * e)
                 default:
                         message("Key \"%c\" is unbound!", (char)key);
 	}
-
 	XUngrabKey(display, AnyKey, AnyModifier, root);
 	grab_keyboard();
 	XSetInputFocus (display, selected, RevertToParent, CurrentTime);
@@ -255,6 +253,7 @@ void message(const char *text, ...)
 	XFlush(display);
 	sleep(TIMEOUT);
 	XFlush(display);
+
 	if(message_window)
 	{
 		XDestroyWindow(display, message_window);
