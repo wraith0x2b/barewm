@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include "conf.h"
 #include <X11/cursorfont.h>
+#include <ctype.h>
+#include <sys/wait.h>
+
 
 #define DEBUG 0
 
@@ -65,6 +68,20 @@ void LOG_DEBUG(const char *text, ...)
 		va_start(vl, text);
 		vfprintf(stderr, text, vl);
 		va_end(vl);
+	}
+}
+static void sighandler(int sig)
+{
+	pid_t pid;
+	int status, serrno;
+	if (sig == SIGCHLD) {
+		serrno = errno;
+		while (1) {
+			pid = waitpid(WAIT_ANY, &status, WNOHANG);
+			if (pid <= 0)
+			break;
+		}
+		errno = serrno;
 	}
 }
 
@@ -543,6 +560,8 @@ void main_loop()
 
 int main(int argc, char *argv[])
 {
+	struct sigaction act;
+
 	if(!(display = XOpenDisplay(DISPLAY))){
 		LOG("BARE: cannot open display! Ending session.\n");
 		return -1;
@@ -582,6 +601,13 @@ int main(int argc, char *argv[])
 	BARE_colormap = DefaultColormap(display, 0);
 	init_gc();
 	message("Welcome to Bare WM v%s", VERSION);
+	
+	act.sa_handler = sighandler;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = SA_NOCLDSTOP | SA_RESTART ;
+	sigaction(SIGCHLD, &act, NULL);
+
+	
 	main_loop();
 
 	XFree(BARE_GC);

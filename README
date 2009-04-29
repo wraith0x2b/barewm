@@ -4,6 +4,9 @@ Bare WM is a full screen window manager aimed at those who spend their day cycli
 It's a dumbed down version of Ratpoison's default behaviour (all windows open in fullscreen, with no ability to resize,just to cycle through).
 For people who only use GNU Screen, Firefox  and/or Emacs all day long, it's really useful as it lets you use every free pixel of the screen.
 
+Shouts to:
+- dimigon ( thanks for the sighandler part :) and some other coding stuff I learned after your submitted patch )
+-
 INSTALL
 
 $ tar -xvf barewm-0.2.tar.gz
