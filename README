@@ -3,7 +3,6 @@ Bare WM - A minimal fullscreen window manager for Linux
 Bare WM is a full screen window manager aimed at those who spend their day cycling through windows instead of having 10 onscreen at a time.
 It's a dumbed down version of Ratpoison's default behaviour (all windows open in fullscreen, with no ability to resize,just to cycle through).
 For people who only use GNU Screen, Firefox  and/or Emacs all day long, it's really useful as it lets you use every free pixel of the screen.
-Not sure if this will ever have any type of tiling...I might make it work with some predefined layouts but not sure.
 
 INSTALL
 
