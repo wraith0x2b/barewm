@@ -4,7 +4,7 @@
 #define VERSION 	"0.2"
 #define DISPLAY		":0"
 #define CURSOR		XC_left_ptr /* default cursor,overrides any custom cursors you may have defined outside the WM. */
-#define CMD_CURSOR	XC_rtl_logo /* cursor to let you know you are in command mode. This is best to differ from CURSOS */
+#define CMD_CURSOR	XC_rtl_logo /* cursor to let you know you are in command mode. This is best to differ from CURSOR */
 /* valid cursor names in "/usr/include/X11/cursorfont.h", or anywhere you can find them on the internet. Defaults should be fine though */
 #define MOD_MASK 	Mod4Mask /* Modifier key */
 #define KEY_PREFIX	't' /* key to enter command mode */
