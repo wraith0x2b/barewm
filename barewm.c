@@ -189,13 +189,6 @@ void handle_keypress_event(XEvent * e)
 		select_window(key - '0');
 		return;
 	}
-	if(key == '-')
-	{
-		XUngrabKey(display, AnyKey, AnyModifier, root);
-		grab_keyboard();
-		select_window(root);
-		return;
-	}
 	switch (key)
         {       
 		case KEY_TERMINAL:
