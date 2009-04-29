@@ -16,7 +16,7 @@ $ sudo make install
 RUNNING
 
 $ vim ~/.xinitrc
-exec xsetroot -cursor_name left_ptr -solid "Gray50" &
+exec xsetroot -solid "Gray50" &
 exec barewm
 $ startx
 
