@@ -21,6 +21,19 @@ exec xsetroot -cursor_name left_ptr -solid "Gray50" &
 exec barewm
 $ startx
 
+USAGE
+Configuration is done by modifying the conf.h file and recompiling.
+The default keybindings are:
+- MOD = Left WIN key
+- MOD + t : enter command mode
+All following keys are issued when in command mode
+- c : spawn terminal (defaults to urxvt)
+- w : display window list
+- q : kill selected window
+- m : spawn launcher menu program (by default it uses dmenu)
+- p : select previous window
+- n : select next window
+
 TODO
 1. Handle the timeout better.
 2. Custom key bindings. Working on implementing message and spawn bindings for now.
