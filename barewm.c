@@ -382,13 +382,8 @@ void list_windows()
 								XDrawString(display, WINDOW_LIST_WINDOW, BARE_GC, WLISTPADDING, ypos, title, strlen(title));
 								ypos+=th;
 							}
-						
-						} else {
-							sprintf(title, "%d - %s", get_position(windows_container[x]), tmp);
-							XDrawString(display, WINDOW_LIST_WINDOW, BARE_GC, WLISTPADDING, ypos, title, strlen(title));
-							ypos+=th;
-						}
 						title[0] = 0;
+						}
 					}
 			}
 		}
