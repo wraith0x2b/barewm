@@ -160,8 +160,8 @@ void handle_keypress_event(XEvent * e)
 	XEvent event;
 	XGrabKey(display, AnyKey, AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
         XMaskEvent (display, KeyPressMask, &event);
+	
 	unsigned int key = XLookupKeysym((XKeyEvent *) &event, 0);
-
 	if (key >= '0' && key <= '9')
 	{
 		XUngrabKey(display, AnyKey, AnyModifier, root);
@@ -169,6 +169,7 @@ void handle_keypress_event(XEvent * e)
 		select_window(key - '0');
 		return;
 	}
+
 	switch (key)
         {       
 		case KEY_TERMINAL:
@@ -200,6 +201,7 @@ void handle_keypress_event(XEvent * e)
                 default:
                         message("Key \"%c\" is unbound!", (char)key);
 	}
+
 	XUngrabKey(display, AnyKey, AnyModifier, root);
 	grab_keyboard();
 	XSetInputFocus (display, selected, RevertToParent, CurrentTime);
@@ -253,7 +255,6 @@ void message(const char *text, ...)
 	XFlush(display);
 	sleep(TIMEOUT);
 	XFlush(display);
-
 	if(message_window)
 	{
 		XDestroyWindow(display, message_window);
@@ -274,6 +275,7 @@ void list_windows()
 	XWindowAttributes winattr;
 	Window root_return;
 	int char_width = TextWidth(fontstruct, " ");
+
  	for (x = 0; x< max_windows; x++)
 	{
 		if(windows_container[x] != None)
@@ -353,8 +355,13 @@ void list_windows()
 								XDrawString(display, WINDOW_LIST_WINDOW, BARE_GC, WLISTPADDING, ypos, title, strlen(title));
 								ypos+=th;
 							}
-							title[0] = 0;
+						
+						} else {
+							sprintf(title, "%d - %s", get_position(windows_container[x]), tmp);
+							XDrawString(display, WINDOW_LIST_WINDOW, BARE_GC, WLISTPADDING, ypos, title, strlen(title));
+							ypos+=th;
 						}
+						title[0] = 0;
 					}
 			}
 		}
@@ -369,6 +376,7 @@ void list_windows()
 		message("No windows to list!");
 	}
 }
+
 int select_window(int window)
 {
 	if(windows_container[window] != None)
@@ -446,8 +454,8 @@ void handle_configure_event(XEvent *e)
       e->xconfigurerequest.type = ConfigureNotify;
       e->xconfigurerequest.x = 0;
       e->xconfigurerequest.y = 0;
-      e->xconfigurerequest.width = SCREEN_WIDTH - (BORDER * 2);
-      e->xconfigurerequest.height = SCREEN_HEIGHT - (BORDER * 2);
+      e->xconfigurerequest.width = SCREEN_WIDTH;
+      e->xconfigurerequest.height = SCREEN_HEIGHT;
       e->xconfigurerequest.window = e->xconfigure.window;
       e->xconfigurerequest.border_width = 0;      
       e->xconfigurerequest.above = None;
