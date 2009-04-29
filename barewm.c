@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include "conf.h"
+#include <X11/cursorfont.h>
 
 #define DEBUG 0
 
@@ -133,7 +134,6 @@ int get_prev_window()
 		}
 	}
 
-	message("Can't access previous window!");
 	return -1;
 }
 int get_next_window()
@@ -147,7 +147,6 @@ int get_next_window()
 			return x;
 		}
 	}
-	message("Can't access next window!");
 	return -1;
 }
 void grab_keyboard()
@@ -160,7 +159,7 @@ void handle_keypress_event(XEvent * e)
 	XEvent event;
 	XGrabKey(display, AnyKey, AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
         XMaskEvent (display, KeyPressMask, &event);
-	
+	XDefineCursor(display, selected, (XCreateFontCursor(display, CURSOR)));
 	unsigned int key = XLookupKeysym((XKeyEvent *) &event, 0);
 	if (key >= '0' && key <= '9')
 	{
@@ -169,7 +168,13 @@ void handle_keypress_event(XEvent * e)
 		select_window(key - '0');
 		return;
 	}
-
+	if(key == '-')
+	{
+		XUngrabKey(display, AnyKey, AnyModifier, root);
+		grab_keyboard();
+		select_window(root);
+		return;
+	}
 	switch (key)
         {       
 		case KEY_TERMINAL:
@@ -186,16 +191,21 @@ void handle_keypress_event(XEvent * e)
 			break;
 		case KEY_KILL:
 			XDestroyWindow(display, selected);
+			selected = root;
 			break;
 		case KEY_PREV:
 			if(get_prev_window() != -1){
 				select_window(get_prev_window());
+			} else {
+				message("Can't access previous window!");
 			}
 			break;
 		case KEY_NEXT:
 			if(get_next_window() != -1)
 			{
 				select_window(get_next_window());
+			} else {
+				message("Can't access next window!");
 			}
 			break;
                 default:
@@ -492,7 +502,8 @@ void main_loop()
 		case KeyPress:
 			if ((XKeycodeToKeysym(display, event.xkey.keycode, 0) == KEY_PREFIX) && (event.xkey.state & MOD_MASK))
 			{       
-				LOG_DEBUG("Switching to modal interface\n");
+				LOG_DEBUG("Switching to command mode\n");
+				XDefineCursor(display, selected, (XCreateFontCursor(display, CMD_CURSOR)));
 				handle_keypress_event(&event);
 			}
 			break;
@@ -541,6 +552,7 @@ int main(int argc, char *argv[])
 		LOG("BARE: cannot get screen! Ending session.\n");
 		return -1;	
 	}
+	selected = root;
 	fontstruct = XLoadQueryFont(display, FONT);
 	if (!fontstruct) {
 		LOG("Couldn't find font \"%s\", loading default\n", FONT);
@@ -551,6 +563,7 @@ int main(int argc, char *argv[])
 		}
 
 	}
+	XDefineCursor(display, selected, (XCreateFontCursor(display, CURSOR)));
 	grab_keyboard();	
 	XSelectInput(display, root, SubstructureNotifyMask | SubstructureRedirectMask | KeyPressMask); 
 
