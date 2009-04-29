@@ -159,11 +159,11 @@ void echo_output(char *cmd)
 {
 	int ch = 0;
 	int x = 0;
-	char s[256];
+	char s[256] = "";
 	FILE *out = popen(cmd, "r");
 	if(out)
 	{
-		while(ch != EOF && ch != '\n') {
+		while(ch != EOF && ch != '\n' && x < 256) {
 			ch = fgetc(out);
 			s[x] = ch;
 			x++;
@@ -171,7 +171,7 @@ void echo_output(char *cmd)
 		s[x -1] = 0;
 		pclose(out);
 		message(s);
-		s[0] = 0
+		s[0] = 0;
 	}
 }
 

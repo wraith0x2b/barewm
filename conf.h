@@ -15,7 +15,7 @@
 #define KEY_PREV	'p' /* select previous window in list */
 #define KEY_NEXT	'n' /* select next window in list */
 #define KEY_STATUS	's' /* show message containing output from the command defined at STATUS */
-#define TERMINAL	"urxvt -display :1" /* terminal */
+#define TERMINAL	"urxvt -display :0" /* terminal */
 #define MENU		"`dmenu_path | dmenu -fn '-xos4-terminus-*-r-*-*-12-*-*-*-*-*-*-*' -nb '#222222' -nf '#FFFFFF' -sf '#ffffff' -sb '#666666'`"
 /* launcher menu to run */
 #define FONT		"-xos4-terminus-*-*-*-*-12-*-*-*-*-*-*-*"
