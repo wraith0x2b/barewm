@@ -22,8 +22,7 @@ exec barewm
 $ startx
 
 TODO
-1. Handle the timeout better. Using Sleep() right now which inevitably freezes display until TIMEOUT is reached. Not a big issue with a TIMEOUT variable
-   of 1 or 2 but after that it's starting to be a pain
+1. Handle the timeout better. Using Sleep() right now which inevitably freezes display until TIMEOUT is reached. Not a big issue with a TIMEOUT variable of 1 or 2 but after that it's starting to be a pain
 2. Custom key bindings (working on implementing message and spawn bindings for now). Useful if you want to set bindings to run your own scripts, for example 
    to display system stats or whatnot using the built in messaging system
 3. Maybe (MAYBE!) splitting. Atleast a 2 frame vertical splitting would be in order
