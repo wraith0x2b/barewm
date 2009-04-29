@@ -48,6 +48,7 @@ void grab_keyboard();
 int get_prev_window();
 int get_next_window();
 void message(const char *text, ...);
+void echo_output(char *cmd);
 
 void LOG(const char *text, ...)
 {
@@ -154,6 +155,26 @@ void grab_keyboard()
 	XGrabKey(display, XKeysymToKeycode (display, KEY_PREFIX), MOD_MASK, root, True, GrabModeAsync, GrabModeAsync);
 }
 
+void echo_output(char *cmd)
+{
+	int ch = 0;
+	int x = 0;
+	char s[256];
+	FILE *out = popen(cmd, "r");
+	if(out)
+	{
+		while(ch != EOF && ch != '\n') {
+			ch = fgetc(out);
+			s[x] = ch;
+			x++;
+		}
+		s[x -1] = 0;
+		pclose(out);
+		message(s);
+		s[0] = 0
+	}
+}
+
 void handle_keypress_event(XEvent * e)
 {
 	XEvent event;
@@ -182,6 +203,9 @@ void handle_keypress_event(XEvent * e)
 			break;
 		case KEY_MENU:
 			spawn(MENU);
+			break;
+		case KEY_STATUS:
+			echo_output(STATUS);
 			break;
 		case KEY_WINLIST:
 			if(TIMEOUT > 0)

@@ -16,9 +16,20 @@ $ sudo make install
 RUNNING
 
 $ vim ~/.xinitrc
-exec xsetroot -solid "Gray50" &
+exec xsetroot -cursor_name left_ptr -solid "Gray50" &
 exec barewm
 $ startx
+
+example short-info.sh - create this, make it executable (chmod +x) and put it somewhere in your search path
+-- cut here --
+#!/bin/sh
+TEMP=$(cat /proc/acpi/thermal_zone/THRM/temperature | awk '{print $2"C"}')
+FREQ=$(cpufreq-info | awk '/current CPU frequency/ {print $5"MHz"}')
+DATE=$(echo -n $(date +%B,\ %d\ -\ %I:%M\ %p))
+SDA2=$(df -h | awk '/sda2/ {print $4"/"$2}')
+INFO=$(echo -n "Storage: $SDA2 :: CPUFreq: $FREQ :: Temperature $TEMP :: $DATE")
+echo -n "$INFO"
+-- cut here --
 
 USAGE
 Configuration is done by modifying the conf.h file and recompiling.
@@ -32,6 +43,7 @@ All following keys are issued when in command mode
 - m : spawn launcher menu program (by default it uses dmenu)
 - p : select previous window
 - n : select next window
+- s : show message containing output from the command defined at as STATUS in conf.h
 
 TODO
 1. Handle the timeout better.
@@ -41,3 +53,8 @@ TODO
 3. Maybe (MAYBE!) splitting. Atleast a 2 frame vertical splitting would be in order if I pursue this.
 4. Named virtual workspaces
 5. < to come >
+
+NEWS:
+
+29.04.2009 - Added a status feature (outputs the result from the command defined at STATUS)
+           - Added options for custom cursors (only ones found in X11/cursorfont.h)
